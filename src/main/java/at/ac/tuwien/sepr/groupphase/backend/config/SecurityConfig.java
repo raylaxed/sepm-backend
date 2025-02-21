@@ -40,6 +40,8 @@ public class SecurityConfig {
             .headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
             .addFilterAfter(blockedUserFilter, UsernamePasswordAuthenticationFilter.class) // Add before authentication filter
             .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
+            .cors()
+            .and()
             .build();
     }
 

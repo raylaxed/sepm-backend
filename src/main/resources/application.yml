@@ -50,6 +50,13 @@ spring:
       add-mappings: true
   mvc:
     static-path-pattern: /static/**
+    cors:
+      allowed-origins: 
+        - https://sepm-frontend.vercel.app
+        - http://localhost:4200
+      allowed-methods: "*"
+      allowed-headers: "*"
+      allow-credentials: true
 
 security:
   auth:
