@@ -3,7 +3,7 @@ app:
     image-directory: ${IMAGE_DIRECTORY:/tmp/myapp/images}
     cancellation-invoices-directory: ${CANCELLATION_INVOICES_DIRECTORY:/tmp/myapp/cancellationInvoices}
     invoices-directory: ${INVOICES_DIRECTORY:/tmp/myapp/Invoices}
-  image-base-url: "http://localhost:8080/images/"
+  image-base-url: ${IMAGE_BASE_URL:https://sepm-backend-6xd0.onrender.com/images/}
 
 # Stripe Configuration
 stripe:
@@ -54,9 +54,17 @@ spring:
       allowed-origins: 
         - https://sepm-frontend.vercel.app
         - http://localhost:4200
-      allowed-methods: "*"
+        - https://sepm-backend-6xd0.onrender.com
+      allowed-methods: 
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - OPTIONS
       allowed-headers: "*"
       allow-credentials: true
+      exposed-headers: "*"
+      max-age: 3600
 
 security:
   auth:
