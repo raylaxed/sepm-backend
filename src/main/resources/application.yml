@@ -1,0 +1,102 @@
+app:
+  storage:
+    image-directory: ${IMAGE_DIRECTORY:/tmp/myapp/images}
+    cancellation-invoices-directory: ${CANCELLATION_INVOICES_DIRECTORY:/tmp/myapp/cancellationInvoices}
+    invoices-directory: ${INVOICES_DIRECTORY:/tmp/myapp/Invoices}
+  image-base-url: "http://localhost:8080/images/"
+
+# Stripe Configuration
+stripe:
+  api:
+    key: ${STRIPE_API_KEY:sk_test_51QfCeIKB0xHb61lm61Aw1kSskZTnuAnBDItaoqk7nsJu4iKBLa8ioQuuUHwu5HZmKe4LVzVydxFXrv1TzOW6nhEC00Vn7RqDHH} # Secret Key
+
+logging:
+  file.name: ./log/backend.log
+  level:
+    root: INFO
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
+  pattern:
+    level: r=%X{r} ip=%X{ip} u=%X{u} %5p
+
+spring:
+  sendgrid:
+    api:
+      key: 
+  datasource:
+    url: jdbc:h2:file:./database/db;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: admin
+    password: password
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    # Set this property to true if you want to see the executed queries
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    # Allows to fetch lazy properties outside of the original transaction. Although this sounds helpful, the property
+    # is disabled since it breaks the principle of least astonishment and leads to bad performance. To learn more,
+    # follow this link: https://bit.ly/2LaX9ku
+    open-in-view: false
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 200MB
+  web:
+    resources:
+      static-locations: classpath:/static/
+      add-mappings: true
+  mvc:
+    static-path-pattern: /static/**
+
+security:
+  auth:
+    header: Authorization
+    prefix: "Bearer "
+    login-uri: /api/v1/authentication
+  jwt:
+    secret: ?E(H+MbQeThWmZq4t7w!z%C*F-J@NcRfUjXn2r5u8x/A?D(G+KbPdSgVkYp3s6v9
+    type: JWT
+    issuer: secure-backend
+    audience: secure-app
+    # 12 hours in milliseconds
+    expiration-time: 43200000
+
+management:
+  server:
+    port: 8081
+  endpoint:
+    shutdown:
+      enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+    health:
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - shutdown
+          - metrics
+          - env
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+---
+spring:
+  config:
+    activate:
+      on-cloud-platform: kubernetes
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+server:
+  shutdown: graceful
