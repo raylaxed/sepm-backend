@@ -51,20 +51,7 @@ spring:
   mvc:
     static-path-pattern: /static/**
     cors:
-      allowed-origins: 
-        - https://sepm-frontend.vercel.app
-        - http://localhost:4200
-        - https://sepm-backend-6xd0.onrender.com
-      allowed-methods: 
-        - GET
-        - POST
-        - PUT
-        - DELETE
-        - OPTIONS
-      allowed-headers: "*"
-      allow-credentials: true
-      exposed-headers: "*"
-      max-age: 3600
+      enabled: true
 
 security:
   auth:
